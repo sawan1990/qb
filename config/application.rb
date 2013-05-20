@@ -70,7 +70,7 @@ module Qb
     config.middleware.use ExceptionNotifier,
       :email_prefix => "[qb exception] ",
       :sender_address => '"qb Notifier" <qb@gslab.com>',
-      :exception_recipients => ['amolp@gslab.com']
+      :exception_recipients => ['sawan@gslab.com']
 
     config.after_initialize do
       require 'nokogiri'

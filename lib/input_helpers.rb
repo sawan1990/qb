@@ -138,6 +138,17 @@ module InputHelpers
 
 
 
+ # overridden input_multiline_text
+  def subjective_input_answer( options = {})
+   
+    object = "question.answer"
+    disabled = (options[:disabled] ? "disabled" : "")
+    html  = input_label("answer", true)
+    data  = eval("@#{object}.#{input}") rescue nil
+    value = options[:value]? options[:value] : ''
+    data =  (data || value).html_safe
+    html << "<div id='answer'><textarea class='span7' style='float:left;' rows='4' #{disabled} name='question[answer]'  >#{data}</textarea></div>"
+  end
 
 
   

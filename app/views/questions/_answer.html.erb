@@ -1,0 +1,9 @@
+<%if question.nature_list.first.eql?"Subjective"%>
+  Answer: <%= question.answer %>
+
+<%else%>
+Options:-
+  <% question.options.each_with_index do |o,i|%>
+    <br/><%= i+1 -%>:- <%= o.statement -%>
+  <%end%>
+<%end%>

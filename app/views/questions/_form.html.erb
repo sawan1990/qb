@@ -35,6 +35,13 @@
                     <input type="text" name="other_topic" id="other_topic" value="Enter other topic"/>
                   </td>
                 </tr>
+
+                <tr>
+                  <td>Comment</td>
+                  <td>
+                    <%= (input_multiline_text 'comment', { :textarea_cols => 21,:textarea_rows => 3, :autofocus => 'autofocus', :label => '', :html => " autofocus='autofocus' width='96%' height='100px'"}).html_safe  %>
+                  </td>
+                </tr>
               </table>
             </div>
           </td>
@@ -55,6 +62,12 @@
       </div>
     </div>
 
+    <div class="control-group" id="subjective" >
+      <div class="controls">
+        <%= render :partial => 'subjective' %>
+      </div>
+    </div>
+
   </fieldset>
 
   <div class="form-actions">
@@ -70,11 +83,12 @@
 <script type="text/javascript">
   function nature_changed(nature){
     if (nature=='Objective'){
-      //$("#objective_options").show();
-      $("#objective_options").effect('highlight',null,'slow');
+      $("#objective_options").show("slow");
+      $("#subjective").hide('slow');
     }
     else{
-      $("#objective_options").effect('fade',null,'slow');
+      $("#objective_options").hide('slow');
+      $("#subjective").show("slow");
     }
   }
   nature_changed($('#question_nature_list').val());

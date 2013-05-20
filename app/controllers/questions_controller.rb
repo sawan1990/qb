@@ -1,16 +1,22 @@
 class QuestionsController < ApplicationController
   before_filter :question
-  skip_before_filter :authenticate_user!, :only => [:index, :show]
+  skip_before_filter :authenticate_user!
   before_filter :validate_tags, :only => [:create, :update]
 
   def index
     tags = filter_tags
 
     # http://stackoverflow.com/questions/2082399/thinking-sphinx-and-acts-as-taggable-on-plugin
-
-    @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page]) unless tags.blank?
-    @questions ||= Question.paginate(:page => params[:page])
-
+    if(current_user.roles.first.name.eql? "admin" rescue false)
+      @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page]) unless tags.blank?
+      @questions ||= Question.paginate(:page => params[:page])
+    else
+      puts "*"*100
+      puts current_user.id
+      @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => ['submitter_id='+current_user.id.to_s]) unless tags.blank?
+      @questions ||= Question.paginate(:page => params[:page],:conditions => ['submitter_id='+current_user.id.to_s])
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.text { send_data @questions.text_format, :filename => "#{Time.now.utc.to_s.gsub('-', '').gsub(':', '').delete(' ')}_questions_#{tags.join('_')}.txt" }
@@ -24,17 +30,17 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @statement.user = current_user
     
     @question.assign_attributes params[:question]
     @question.topic_list = params[:question][:topic_list] unless params[:question][:topic_list].blank?
-    @question.assign_objective_options params[:objective_options]
+    
+    @question.assign_objective_options params[:objective_options] if  params[:question]["nature_list"].eql?"Objective"
+    @question.submitter = current_user
 
-    if @statement.save_attachments(params[:attachment]) and @question.save!
+
+    if @question.save_attachments(params[:attachment]) and @question.save!
       redirect_to @question, :notice => "Successfully created question."
-
     else
-      @question.errors[:base] << @statement.errors
       @question.errors[:base] << @attachments_errors
       render :new
     end
@@ -44,7 +50,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.user != current_user
+    if @question.submitter != current_user
       flash[:error] = "For now, only owner can edit this."
       render :edit
       return
@@ -56,11 +62,10 @@ class QuestionsController < ApplicationController
     
     @question.assign_attributes :delta => true
     
-    if @statement.save_attachments(params[:attachment]) and @statement.update_attributes(params[:statement]) and @question.save
+    if @question.save_attachments(params[:attachment]) and @question.update_attributes(params[:statement]) and @question.save
       redirect_to @question, :notice  => "Successfully updated question."
 
     else
-      @question.errors[:base] << @statement.errors
       @question.errors[:base] << @attachments_errors
       render :edit
     end
@@ -111,4 +116,5 @@ class QuestionsController < ApplicationController
   def question
     @question ||= Question.find_by_id(params[:id]) || Question.new
   end
+
 end

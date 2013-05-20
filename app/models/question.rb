@@ -9,6 +9,8 @@ class Question < ActiveRecord::Base
 
   attr_accessor :marks
 
+  attr_accessible :statement,:answer,:comment
+
   def text
     Nokogiri::HTML(statement).text
   end

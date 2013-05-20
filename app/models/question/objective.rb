@@ -10,7 +10,7 @@ class Question < ActiveRecord::Base
   def update_objective_options options
     return objective_options.destroy unless options
 
-    options = options.values if options.is_a? Hash.collect
+    options = options.values if options.is_a? Hash
     options.reverse!
 
     self.objective_options.each do |existing|
@@ -34,12 +34,11 @@ class Question < ActiveRecord::Base
     return objective_options.destroy unless options
 
     options = options.values if options.is_a? Hash
-    options.reverse!
 
     objective_options.each do |existing|
       updated_one = options.pop
 
-      if updated_one
+      unless updated_one.eql? ""
         existing.statement  = updated_one[:statement]
         existing.is_correct = updated_one[:is_correct]
         #existing.save
@@ -49,7 +48,7 @@ class Question < ActiveRecord::Base
     end
 
     options.each do |new_one|
-      objective_options.new new_one
+      objective_options.new new_one unless new_one.eql? ""
     end
   end
 end
