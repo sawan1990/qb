@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
      @current_user = current_user
     # http://stackoverflow.com/questions/2082399/thinking-sphinx-and-acts-as-taggable-on-plugin
     if(current_user.roles.first.name.eql? "admin" rescue false)
+      @admin = true
       @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page]) unless tags.blank?
       @questions ||= Question.paginate(:page => params[:page])
   #    @all_questions = Question.all
