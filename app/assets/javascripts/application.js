@@ -36,17 +36,38 @@ function validate_question(){
         
 
         var count = 0;
+        var checked = false;
+        if($('textarea[name="objective_options[0][statement]"]').val().length > 0){
+                    count = count + 1;
+                    if($('#question_answers_0_checkbox:checked').length > 0){
+                        checked = true
+                    }
+        }
+        if($('textarea[name="objective_options[1][statement]"]').val().length > 0){
+                    count = count + 1;
+                    if($('#question_answers_1_checkbox:checked').length > 0){
+                        checked = true
+                    }
+        }
+        if($('textarea[name="objective_options[2][statement]"]').val().length > 0){
+                    count = count + 1;
+                    if($('#question_answers_2_checkbox:checked').length > 0){
+                        checked = true
+                    }
+        }
+        if($('textarea[name="objective_options[3][statement]"]').val().length > 0){
+                    count = count + 1;
+                    if($('#question_answers_3_checkbox:checked').length > 0){
+                        checked = true
+                    }
+        }
+        if($('textarea[name="objective_options[4][statement]"]').val().length > 0){
+                    count = count + 1;
+                    if($('#question_answers_4_checkbox:checked').length > 0){
+                        checked = true
+                    }
+        }
 
-        if($('textarea[name="objective_options[0][statement]"]').val().length > 0)
-                    count = count + 1;
-        if($('textarea[name="objective_options[1][statement]"]').val().length > 0)
-                    count = count + 1;
-        if($('textarea[name="objective_options[2][statement]"]').val().length > 0)
-                    count = count + 1;
-        if($('textarea[name="objective_options[3][statement]"]').val().length > 0)
-                    count = count + 1;
-        if($('textarea[name="objective_options[4][statement]"]').val().length > 0)
-                    count = count + 1;
 
 
         if(count<2){
@@ -54,7 +75,7 @@ function validate_question(){
             return false;
         }
 
-        if($('input[type="checkbox"]:checked').length <=0){
+        if(!checked){
             alert("Atleast one answer must be correct one");
             return false;
         }

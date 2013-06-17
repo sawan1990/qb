@@ -3,7 +3,7 @@
 <div>Total Question submitted :- <b><%= @questions.count %></b> of minimum 21</div>
 
 <%if @current_user.track.eql? "qa"
- topic_list = {"Scripting" => 4, "Networking" => 4,"QA Concepts" => 8 ,"Linux" => 4}
+ topic_list = {"Scripting" => 4, "Networking" => 4,"QA Concepts" => 8 ,"Linux QA" => 4}
   Question.qa_topics.each do |topic|
       count = 0
       @questions.each do |q|
@@ -14,7 +14,7 @@
 
 
 <%else
-topic_list = {"Core Java" => 10, "JSP" => 3,"SQL" => 2 ,"Linux" => 5}
+topic_list = {"Core Java" => 10, "JSP" => 3,"SQL" => 2 ,"Linux Dev" => 5}
 
   Question.dev_topics.each do |topic|
       count = 0

@@ -22,9 +22,10 @@
   </p>
 
 </div>
-
+<%unless @judge%>
 <p>
   <%= link_to "Edit", edit_question_path(@question), :class => 'btn' %> |
   <%= link_to "Destroy", @question, :confirm => 'Are you sure?', :method => :delete, :class => 'btn' %> |
   <%= link_to "View All", questions_path, :class => 'btn btn-danger' %>
 </p>
+<%end%>
