@@ -1,0 +1,53 @@
+<style>
+
+.well {
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
+}
+p {
+    word-wrap: break-word;
+}
+p {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    margin: 0 0 9px;
+}
+</style>
+<div class="well">
+  <p>
+    Id:<%=@question.id%>
+  </p>
+  <p>
+    Title:
+    <%= @question.title %>
+    <br/><i>by <%=@question.submitter.email%></i>
+  </p>
+  <p>
+    Statement:
+    <%= @question.statement.html_safe %>
+  </p>
+  <p>
+    Complexity: <%= @question.complexity %>
+  </p>
+  <p>
+    Topic: <%= @question.topic %>
+  </p>
+  <p>
+    <%if @question.nature_list.first.eql?"Subjective"%>
+  Answer: <%= @question.answer %>
+
+<%else%>
+Options:-
+  <% @question.options.each_with_index do |o,i|%>
+    <br/><%= i+1 -%>:- <%= o.statement -%>
+  <%end rescue nil%>
+<%end%>
+  </p>
+
+</div>
