@@ -8,9 +8,12 @@ class User < ActiveRecord::Base
   #devise :registerable if CONFIG[:open_registration]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :remember_me, :confirmed_at
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :remember_me, :confirmed_atm,:track,:group_name
   # attr_accessible :title, :body
 
+  validates :first_name, :presence => true
+  validates :group_name, :presence => true
+  
   has_many :statements
   has_many :questions, :through => :statements
 

@@ -4,11 +4,13 @@
   <%= f.error_notification %>
 
   <div class="inputs">
-    <%= f.input :email, :required => true, :autofocus => true %>
-    <%= f.input :first_name, :required => true %>
-    <%= f.input :last_name, :required => true %>
+    <%= f.input :email, :required => true, :autofocus => true ,:label=>"Primary email address" %>
+    <%= f.input :group_name, :required => true %>
+    <%= f.input :first_name, :required => true,:label=>"Group member 1" %>
+    <%= f.input :last_name, :label=>"Group member 2" %>
     <%= f.input :password, :required => true %>
     <%= f.input :password_confirmation, :required => true %>
+    <%= f.input :track, :collection => ["dev","qa"], :as => :radio, :checked => "dev" %>
   </div>
 
   <div class="actions">

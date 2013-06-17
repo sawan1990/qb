@@ -1,20 +1,32 @@
 class QuestionsController < ApplicationController
   before_filter :question
-  skip_before_filter :authenticate_user!
   before_filter :validate_tags, :only => [:create, :update]
 
   def index
     tags = filter_tags
-
+     @current_user = current_user
     # http://stackoverflow.com/questions/2082399/thinking-sphinx-and-acts-as-taggable-on-plugin
     if(current_user.roles.first.name.eql? "admin" rescue false)
       @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page]) unless tags.blank?
       @questions ||= Question.paginate(:page => params[:page])
+  #    @all_questions = Question.all
+    elsif(current_user.first_name.eql? "devjudge")
+      @judge = true
+      conditions = ["track='dev'"]
+      conditions[0] << " and  created_at between '"+params[:fromdate] +"' and '"+params[:todate] +"'"  if(params[:fromdate])
+      @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => conditions).order("created_at DESC") unless tags.blank?
+      @questions ||= Question.paginate(:page => params[:page],:conditions => conditions).order("created_at DESC")
+
+    elsif( current_user.first_name.eql? "qajudge")
+      @judge = true
+      conditions = ["track='qa'"]
+      conditions[0] << " and  created_at between '"+params[:fromdate] +"' and '"+params[:todate] +"'"  if(params[:fromdate])
+      @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => conditions).order("created_at DESC") unless tags.blank?
+      @questions ||= Question.paginate(:page => params[:page],:conditions => conditions).order("created_at DESC")
     else
-      puts "*"*100
-      puts current_user.id
       @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => ['submitter_id='+current_user.id.to_s]) unless tags.blank?
       @questions ||= Question.paginate(:page => params[:page],:conditions => ['submitter_id='+current_user.id.to_s])
+    #  @all_questions = Question.find_all_by_submitter_id current_user.id
     end
     
     respond_to do |format|
@@ -38,7 +50,7 @@ class QuestionsController < ApplicationController
     @question.submitter = current_user
 
 
-    if @question.save_attachments(params[:attachment]) and @question.save!
+    if @question.save_attachments(params[:attachment]) and (@question.save! rescue false)
       redirect_to @question, :notice => "Successfully created question."
     else
       @question.errors[:base] << @attachments_errors
@@ -72,9 +84,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    #@question = Question.find_by_id params[:id]
-    #@question.destroy
-    redirect_to questions_url, :notice => "feature inactive."
+
+    @question = Question.find_by_id params[:id]
+    if((current_user.roles.first.name.eql? "admin" rescue false) or (@question.submitter == current_user))
+      @question.destroy
+      redirect_to questions_url, :notice => "Question Deleted Successfully"
+    else
+      redirect_to questions_url, :notice => "Question Not deleted:- You were not permitted to delete the question"
+    end
   end
 
   def import
@@ -97,11 +114,19 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def finalize
+    if(current_user.first_name.eql? "qajudge" or current_user.first_name.eql? "devjudge")
+      question = Question.find params[:id]
+      NotifyMailer.select_question(question).deliver
+    end
+    redirect_to "/questions"
+  end
+
   private
 
   def validate_tags
-    params[:question][:topic_list] = params[:other_topic] if params[:question][:topic_list]=='Other'
-    params[:question].delete :topic_list if params[:question][:topic_list].downcase.include? 'other'
+  #  params[:question][:topic_list] = params[:other_topic] if params[:question][:topic_list]=='Other'
+  #  params[:question].delete :topic_list if params[:question][:topic_list].downcase.include? 'other'
   end
 
   def filter_tags
@@ -116,5 +141,7 @@ class QuestionsController < ApplicationController
   def question
     @question ||= Question.find_by_id(params[:id]) || Question.new
   end
+
+
 
 end

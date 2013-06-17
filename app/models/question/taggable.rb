@@ -1,20 +1,39 @@
 class Question < ActiveRecord::Base
   acts_as_taggable
-  
+
   acts_as_taggable_on :topics
+  acts_as_taggable_on :qa_topics
+  acts_as_taggable_on :dev_topics
   acts_as_taggable_on :complexities
   acts_as_taggable_on :natures
 
-  attr_accessible :topic_list
+  attr_accessible :qa_topics_list
+  attr_accessible :dev_topics_list
   attr_accessible :complexity_list
   attr_accessible :nature_list
 
   def self.topics
-    top_topics topic_counts.size
+    top_qa_topics(qa_topic_counts.size) +  top_dev_topics(dev_topic_counts.size)
   end
 
   def self.topic_names
-    topics.map(&:name)
+    qa_topics.map(&:name)+dev_topics.map(&:name)
+  end
+
+  def self.qa_topics
+    top_qa_topics qa_topic_counts.size
+  end
+
+  def self.qa_topic_names
+    qa_topics.map(&:name)
+  end
+
+   def self.dev_topics
+    top_dev_topics dev_topic_counts.size
+  end
+
+  def self.dev_topic_names
+    dev_topics.map(&:name)
   end
 
   def self.complexities
@@ -34,7 +53,7 @@ class Question < ActiveRecord::Base
   end
   
   def topic
-    topic_list.first
+    qa_topic_list.first || dev_topic_list.first
   end
 
   def complexity

@@ -5,5 +5,5 @@
 Options:-
   <% question.options.each_with_index do |o,i|%>
     <br/><%= i+1 -%>:- <%= o.statement -%>
-  <%end%>
+  <%end rescue nil%>
 <%end%>

@@ -9,7 +9,13 @@ class Question < ActiveRecord::Base
 
   attr_accessor :marks
 
-  attr_accessible :statement,:answer,:comment
+  attr_accessible :statement,:answer,:comment, :dev_topic_list, :qa_topic_list,:track
+
+  validates :statement, :presence => true
+
+
+
+
 
   def text
     Nokogiri::HTML(statement).text

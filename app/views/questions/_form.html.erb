@@ -1,13 +1,13 @@
-<%= form_for @question, :html => { :multipart => true, :class => 'form-horizontal' } do |f| %>
+ <%= form_for @question, :html => { :multipart => true, :class => 'form-horizontal' ,:onsubmit=>" return validate_question()"} do |f| %>
   <fieldset>
     <%= raw errors_for @question %>
-    <%= (input_multiline_text 'statement', { :textarea_cols => 80, :autofocus => 'autofocus', :label => '', :html => " autofocus='autofocus' width='96%' height='300px'"}).html_safe  %>
+    <%= (input_multiline_text 'statement', { :textarea_cols => 116, :autofocus => 'autofocus', :label => '', :html => " autofocus='autofocus' width='96%' height='300px'"}).html_safe  %>
 
     <div class="control-group">
       <table>
         <tr>
 
-          <td class="span6">
+          <td class="span10">
             <!--<#% #raw input_attachments :object => 'statement' %>-->
           </td>
 
@@ -24,22 +24,21 @@
                 <tr>
                   <td>Topic: </td>
                   <td>
-                    <%= select("question", "topic_list", Question.topics.collect{|topic| [topic.name, topic.name]} + [['Other', 'Other']], {}, :onchange => 'topic_changed(this.value);') %>
+                    <%puts "*"*100%>
+                    <%puts current_user.track%>
+                    <%if current_user.track == "qa"%>
+                      <%= select("question", "qa_topic_list", Question.qa_topics.collect{|topic| [topic.name, topic.name]}, {}, :onchange => 'topic_changed(this.value);') %>
+                    <%else%>
+                      <%= select("question", "dev_topic_list", Question.dev_topics.collect{|topic| [topic.name, topic.name]}, {}, :onchange => 'topic_changed(this.value);') %>
+                    <%end%>
                   </td>
                 </tr>
 
-                <tr>
-                  <td>
-                  </td>
-                  <td>
-                    <input type="text" name="other_topic" id="other_topic" value="Enter other topic"/>
-                  </td>
-                </tr>
-
+                
                 <tr>
                   <td>Comment</td>
                   <td>
-                    <%= (input_multiline_text 'comment', { :textarea_cols => 21,:textarea_rows => 3, :autofocus => 'autofocus', :label => '', :html => " autofocus='autofocus' width='96%' height='100px'"}).html_safe  %>
+                    <%= (input_multiline_text 'comment', { :textarea_cols => 22,:textarea_rows => 3, :autofocus => 'autofocus', :label => '', :html => " autofocus='autofocus' width='96%' height='100px'",:style=>"margin-left: -10px;"}).html_safe  %>
                   </td>
                 </tr>
               </table>
@@ -69,7 +68,7 @@
     </div>
 
   </fieldset>
-
+<input type="hidden" name="question[track]" value="<%= current_user.track %>"/>
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to 'Cancel', questions_path, :class => 'btn' %>
@@ -93,14 +92,5 @@
   }
   nature_changed($('#question_nature_list').val());
 
-  function topic_changed(topic){
-    if (topic=='Other'){
-      $("#other_topic").effect('highlight',null,'slow');
-    }
-    else{
-      $("#other_topic").effect('fade',null,'slow');
-    }
-  }
-  topic_changed($('#question_topic_list').val());
-
+  
 </script>

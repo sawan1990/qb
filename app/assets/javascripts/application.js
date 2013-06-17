@@ -29,3 +29,43 @@ function isArrowKeyPressed(e){
   }
   return false;
 }
+
+
+function validate_question(){
+    if($('#question_nature_list').val() == 'Objective'){
+        
+
+        var count = 0;
+
+        if($('textarea[name="objective_options[0][statement]"]').val().length > 0)
+                    count = count + 1;
+        if($('textarea[name="objective_options[1][statement]"]').val().length > 0)
+                    count = count + 1;
+        if($('textarea[name="objective_options[2][statement]"]').val().length > 0)
+                    count = count + 1;
+        if($('textarea[name="objective_options[3][statement]"]').val().length > 0)
+                    count = count + 1;
+        if($('textarea[name="objective_options[4][statement]"]').val().length > 0)
+                    count = count + 1;
+
+
+        if(count<2){
+           alert("Atleast two options must be filled");
+            return false;
+        }
+
+        if($('input[type="checkbox"]:checked').length <=0){
+            alert("Atleast one answer must be correct one");
+            return false;
+        }
+
+    }else if($('#question_nature_list').val() == 'Subjective'){
+        if($('#subjectiveAnswer').val().length<= 0)
+        {    alert("Answer is compulsary");
+            return false;
+        }
+
+    }
+    return true;
+
+}
