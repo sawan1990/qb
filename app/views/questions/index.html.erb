@@ -40,7 +40,7 @@
         <th>Questions</th>
         <th>Complexity</th>
         <th>Topic</th>
-        <th></th>
+        <th><%=raw"Question of the day" if @judge%></th>
         <th><%=raw"date" if @judge%></th>
       </tr>
     </thead>
@@ -68,7 +68,7 @@
           </td>" unless @judge%>
           <td>
             <%= link_to "Delete", "/questions/#{question.id}", :confirm => "Are you sure?", :method=>:delete unless @judge%>
-            <%=raw " <button class=\"btn\" onclick=\"window.location = '/questions/judge/finalize/#{question.id}';\">Finalize this Question for Question of the day</button>" if @judge%>
+            <%=raw " <button class=\"btn\" onclick=\"window.location = '/questions/judge/finalize/#{question.id}';\">Finalize this quesion</button>" if @judge%>
           </td>
           <%=raw"<td>#{question.created_at.day}/#{question.created_at.month}</td>" if @judge%>
         </tr>
