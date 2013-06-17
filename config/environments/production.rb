@@ -61,7 +61,7 @@ Qb::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { :host => '172.20.25.187:5678/' }
+  config.action_mailer.default_url_options = { :host => '192.168.0.226:3000/' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
@@ -69,15 +69,14 @@ Qb::Application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
 
+
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "qb.gslab.com",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: 'amol.testing123',
-    password: 'taktook123'
+    address: "mail.gslab.com",
+    port: 25,
+    domain: "gslab.com",
+    authentication: "none"
   }
+
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)

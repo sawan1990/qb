@@ -22,13 +22,10 @@ Qb::Application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "qb.gslab.com",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: 'amol.testing123',
-    password: 'taktook123'
+    address: "mail.gslab.com",
+    port: 25,
+    domain: "gslab.com",
+    authentication: "none"
   }
 
   # Print deprecation notices to the Rails logger
