@@ -13,14 +13,14 @@ class QuestionsController < ApplicationController
   #    @all_questions = Question.all
     elsif(current_user.first_name.eql? "devjudge")
       @judge = true
-      conditions = ["track='dev'"]
+      conditions = ["track='dev' and id > 3"]
       conditions[0] << " and  created_at between '"+params[:fromdate] +"' and '"+params[:todate] +"'"  if(params[:fromdate])
       @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => conditions).order("created_at DESC") unless tags.blank?
       @questions ||= Question.paginate(:page => params[:page],:conditions => conditions).order("created_at DESC")
 
     elsif( current_user.first_name.eql? "qajudge")
       @judge = true
-      conditions = ["track='qa'"]
+      conditions = ["track='qa' and id > 3"]
       conditions[0] << " and  created_at between '"+params[:fromdate] +"' and '"+params[:todate] +"'"  if(params[:fromdate])
       @questions = Question.tagged_with(tags, :match_all => false).paginate(:page => params[:page],:conditions => conditions).order("created_at DESC") unless tags.blank?
       @questions ||= Question.paginate(:page => params[:page],:conditions => conditions).order("created_at DESC")
