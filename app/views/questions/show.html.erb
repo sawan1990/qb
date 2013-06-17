@@ -3,7 +3,7 @@
 <div class="well">
   <p>
     <%= @question.title %>
-    <br/><i>by <%=@question.submitter.email%></i>
+    <br/><i>by <%=@question.submitter.email rescue nil%></i>
   </p>
   <p>
     <%= @question.statement.html_safe %>
