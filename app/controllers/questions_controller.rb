@@ -61,7 +61,6 @@ class QuestionsController < ApplicationController
     if @question.save_attachments(params[:attachment]) and (@question.save! rescue false)
       redirect_to @question, :notice => "Successfully created question."
     else
-      @question.errors[:base] << @attachments_errors
       render :new
     end
   end

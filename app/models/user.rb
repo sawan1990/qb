@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
 
   validates :first_name, :presence => true
-  validates :group_name, :presence => true
+  validates :group_name, :presence => true,:uniqueness => true
   
   has_many :statements
   has_many :questions, :through => :statements
@@ -22,4 +22,8 @@ class User < ActiveRecord::Base
   def name
     "#{first_name} #{last_name}"
   end
+  def title
+    "#{group_name} Track:#{track}"
+  end
+
 end

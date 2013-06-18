@@ -1,6 +1,6 @@
 <div class="well">
   <div style="font-size:15px;">
-<div>Total Question submitted :- <b><%= @questions.count %></b> of minimum 21</div>
+<div>Total Questions submitted :- <b><%= @questions.count %></b> of minimum 21</div>
 
 <%if @current_user.track.eql? "qa"
  topic_list = {"Scripting" => 4, "Networking" => 4,"QA Concepts" => 8 ,"Linux QA" => 4}
@@ -26,5 +26,5 @@ topic_list = {"Core Java" => 10, "JSP" => 3,"SQL" => 2 ,"Linux Dev" => 5}
 
 <%end%>
   </div>
-  <marquee><div style="font-size: 20px;color:#0074CC">The more question you submit more are the chances of winning</div></marquee>
+  <marquee><div style="font-size: 20px;color:#0074CC">The more questions you submit more are the chances of winning</div></marquee>
 </div>
