@@ -32,6 +32,12 @@ function isArrowKeyPressed(e){
 
 
 function validate_question(){
+
+    if($('#question_statement').val().length<= 0){
+        alert("Please enter question");
+        return false;
+    }
+        
     if($('#question_nature_list').val() == 'Objective'){
         
 

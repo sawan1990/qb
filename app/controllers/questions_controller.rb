@@ -44,6 +44,7 @@ class QuestionsController < ApplicationController
     unless((current_user.roles.first.name.eql? "admin" rescue false) or (@question.submitter == current_user) or current_user.first_name.eql? "qajudge" or current_user.first_name.eql? "devjudge")
       redirect_to questions_url, :notice => "You were not permitted to View the question"
     end
+    redirect_to "/questions" if @question.nil?
   end
 
   def new
