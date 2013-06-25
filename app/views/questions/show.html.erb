@@ -2,17 +2,17 @@
 
 <div class="well">
   <p>
-    <%= @question.title %>
+    Question:<%= @question.statement.html_safe %>
     <br/><i>by <%=@question.submitter.email rescue nil%></i>
-  </p>
-  <p>
-    <%= @question.statement.html_safe %>
   </p>
   <p>
     Complexity: <%= @question.complexity %>
   </p>
   <p>
     Topic: <%= @question.topic %>
+  </p>
+  <p>
+    Comment: <%= @question.comment %>
   </p>
   <p>
     <%= render :partial => 'answer' ,:locals => {:question => @question}%>
